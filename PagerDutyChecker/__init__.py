@@ -13,7 +13,7 @@ BASEDIR, _ = path.split(path.realpath(__file__))
 class Resources():
     ALERT_ICON = path.join(BASEDIR, '../resources/pd_alert.png')
     ACK_ICON = path.join(BASEDIR, '../resources/pd_ack.png')
-    OK_ICON = path.join(BASEDIR, '../resources/pd_ok2.png')
+    OK_ICON = path.join(BASEDIR, '../resources/pd_ok.png')
 
 
 class TrayIcon(QtWidgets.QSystemTrayIcon):
