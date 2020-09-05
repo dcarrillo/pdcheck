@@ -19,7 +19,7 @@ def main():
         with open(conf_file, 'r') as config_file:
             conf = yaml.load(config_file, Loader=yaml.SafeLoader)
 
-        conf['interval'] = conf['interval'] if 'interval' in conf else 30000
+        conf['interval'] = conf['interval'] if 'interval' in conf else 30
         conf['pd_teams'] = conf['pd_teams'] if 'pd_teams' in conf else None
         conf['pd_users'] = conf['pd_users'] if 'pd_users' in conf else None
 
@@ -38,7 +38,7 @@ def main():
     tray_app.show()
 
     timer = QtCore.QTimer(widget)
-    timer.setInterval(conf['interval'])
+    timer.setInterval(conf['interval'] * 1000)
     timer.timeout.connect(tray_app.update_incidents)
     timer.start()
 
