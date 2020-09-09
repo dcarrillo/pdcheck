@@ -33,26 +33,24 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
 
     def update_incidents(self) -> None:
         incidents = self._check_pager_duty()
+        incidents.sort(key=lambda k: k['status'])
 
-        if incidents:
-            icon = QtGui.QIcon(Resources.OK_ICON)
-            incidents.sort(key=lambda k: k['status'])
+        icon = QtGui.QIcon(Resources.OK_ICON)
+        self.menu.clear()
+        for incident in incidents:
+            print(incident)
+            if incident['status'] == 'acknowledged':
+                icon = QtGui.QIcon(Resources.ACK_ICON)
+            else:
+                icon = QtGui.QIcon(Resources.ALERT_ICON)
 
-            self.menu.clear()
-            for incident in incidents:
-                print(incident)
-                if incident['status'] == 'acknowledged':
-                    icon = QtGui.QIcon(Resources.ACK_ICON)
-                else:
-                    icon = QtGui.QIcon(Resources.ALERT_ICON)
+            action = self.menu.addAction(icon, f'{incident["created_at"]} {incident["title"]}')
+            action.triggered.connect(
+                lambda f=webbrowser.open, url=incident['html_url']: webbrowser.open(url)
+            )
 
-                action = self.menu.addAction(icon, f'{incident["created_at"]} {incident["title"]}')
-                action.triggered.connect(
-                    lambda f=webbrowser.open, url=incident['html_url']: webbrowser.open(url)
-                )
-
-            self.add_exit_menu_item()
-            self.setIcon(icon)
+        self.add_exit_menu_item()
+        self.setIcon(icon)
 
     def _check_pager_duty(self) -> List:
         pd_session = pdpyras.APISession(self.conf['pd_api_key'])
