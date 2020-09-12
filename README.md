@@ -25,4 +25,4 @@ pd_users:            # Array of user identifiers to filtering by. Empty by defau
   - XXXXXXX
 ```
 
-Instead of setting `pd_api_key` the system environment variable `PD_API_KEY` can be used.
+The system environment variable `PD_API_KEY` can be used innstead of setting `pd_api_key`.
