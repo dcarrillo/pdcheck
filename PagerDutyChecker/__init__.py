@@ -1,3 +1,4 @@
+import logging
 import webbrowser
 from os import path
 from typing import Dict, List
@@ -8,6 +9,8 @@ import pdpyras
 
 
 BASEDIR, _ = path.split(path.realpath(__file__))
+
+logger = logging.getLogger('pdcheck')
 
 
 class Resources():
@@ -38,7 +41,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         icon = QtGui.QIcon(Resources.OK_ICON)
         self.menu.clear()
         for incident in incidents:
-            print(incident)
+            logger.info(f'Registering incident in status {incident["status"]}: {incident}')
             if incident['status'] == 'acknowledged':
                 icon = QtGui.QIcon(Resources.ACK_ICON)
             else:
@@ -54,6 +57,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
 
     def _check_pager_duty(self) -> List:
         pd_session = pdpyras.APISession(self.conf['pd_api_key'])
+        logger.info('Requesting incidents to PagerDuty...')
         incidents = pd_session.list_all('incidents',
                                         params={
                                             'team_ids[]': self.conf['pd_teams'],
@@ -65,4 +69,5 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
 
     def exit(self) -> None:
         self.hide()
+        logger.info('Shutting down...')
         QtCore.QCoreApplication.exit()
