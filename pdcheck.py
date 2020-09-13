@@ -49,7 +49,7 @@ def main():
         logger.error(e)
         sys.exit(1)
 
-    app = QtWidgets.QApplication(sys.argv)
+    app = QtWidgets.QApplication()
     widget = QtWidgets.QWidget()
     logger.info('Starting pdcheck')
     tray_app = pdc.TrayIcon(widget, conf)
