@@ -1,6 +1,6 @@
 import logging
 import webbrowser
-from os import path
+from pathlib import Path
 from typing import Dict, List
 
 from PySide2 import QtCore, QtGui, QtWidgets
@@ -8,15 +8,15 @@ from PySide2 import QtCore, QtGui, QtWidgets
 import pdpyras
 
 
-BASEDIR, _ = path.split(path.realpath(__file__))
+BASEDIR = Path(__file__).resolve().parent
 
 logger = logging.getLogger('pdcheck')
 
 
 class Resources():
-    ALERT_ICON = path.join(BASEDIR, '../resources/pd_alert.png')
-    ACK_ICON = path.join(BASEDIR, '../resources/pd_ack.png')
-    OK_ICON = path.join(BASEDIR, '../resources/pd_ok.png')
+    ALERT_ICON = str(BASEDIR.parent / 'resources/pd_alert.png')
+    ACK_ICON = str(BASEDIR.parent / 'resources/pd_ack.png')
+    OK_ICON = str(BASEDIR.parent / 'resources/pd_ok.png')
 
 
 class TrayIcon(QtWidgets.QSystemTrayIcon):
